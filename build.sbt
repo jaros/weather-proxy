@@ -12,6 +12,7 @@ libraryDependencies ++= {
   Seq(
     "io.spray"            %%  "spray-can"     % sprayV,
     "io.spray"            %%  "spray-routing-shapeless2" % sprayV,
+    "io.spray"            %%  "spray-client" % sprayV,
     "io.spray"            %%  "spray-testkit" % sprayV  % "test",
     "org.parboiled"       %%  "parboiled"     % "2.0.1",
     "com.typesafe.akka"   %%  "akka-actor"    % akkaV,
