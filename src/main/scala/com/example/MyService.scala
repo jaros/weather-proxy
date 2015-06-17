@@ -29,7 +29,6 @@ class MyServiceActor extends Actor with MyService {
 
 // this trait defines our service behavior independently from the service actor
 trait MyService extends HttpService {
-  this: MyServiceActor =>
 
   import scala.concurrent.ExecutionContext.Implicits.global
 
