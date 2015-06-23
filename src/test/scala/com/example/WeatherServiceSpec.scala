@@ -2,13 +2,18 @@ package com.example
 
 import org.specs2.mutable.Specification
 import spray.testkit.Specs2RouteTest
+import scala.concurrent.duration._
 import spray.http._
 import StatusCodes._
+
+import scala.concurrent.duration.FiniteDuration
 
 class WeatherServiceSpec extends Specification with Specs2RouteTest with WeatherService {
   def actorRefFactory = system
 
   "MyService" should {
+
+    implicit val routeTestTimeout = new FiniteDuration(5, SECONDS)
 
     "return a greeting for GET requests to the root path" in {
       Get() ~> myRoute ~> check {
@@ -16,7 +21,7 @@ class WeatherServiceSpec extends Specification with Specs2RouteTest with Weather
       }
     }
 
-    "leave GET requests to other paths unhandled" in {
+    "return weather forecast for GET request with location parameter" in {
       Get("/?location=zurich") ~> myRoute ~> check {
         responseAs[String] must contain("coord")
       }
