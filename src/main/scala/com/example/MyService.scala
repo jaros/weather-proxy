@@ -35,6 +35,7 @@ trait MyService extends HttpService {
 
   implicit lazy val timeout = Timeout(5 seconds)
 
+  val pipeline: HttpRequest => Future[HttpResponse] = sendReceive
 
   val myRoute =
     path("") {
@@ -50,11 +51,7 @@ trait MyService extends HttpService {
 
     }
 
-  def findWeatherAtLocation(cityName: String): ToResponseMarshallable = {
-    val pipeline: HttpRequest => Future[HttpResponse] = sendReceive
-
-    val response: Future[HttpResponse] = pipeline(Get(s"http://api.openweathermap.org/data/2.5/weather?q=$cityName"))
-
-    response.map(_.entity.data.asString)
+  def findWeatherAtLocation(cityName: String): Future[String] = {
+    pipeline(Get(s"http://api.openweathermap.org/data/2.5/weather?q=$cityName")).map(_.entity.data.asString)
   }
 }
