@@ -15,7 +15,7 @@ import scala.util.{Success, Failure}
 
 // we don't implement our route structure directly in the service actor because
 // we want to be able to test it independently, without having to spin up an actor
-class MyServiceActor extends Actor with MyService {
+class AppRunnerActor extends Actor with WeatherService {
 
   // the HttpService trait defines only one abstract member, which
   // connects the services environment to the enclosing actor or test
@@ -29,7 +29,7 @@ class MyServiceActor extends Actor with MyService {
 
 
 // this trait defines our service behavior independently from the service actor
-trait MyService extends HttpService {
+trait WeatherService extends HttpService {
 
   import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -51,7 +51,7 @@ trait MyService extends HttpService {
 
     }
 
-  def findWeatherAtLocation(cityName: String): Future[String] = {
+  def findWeatherAtLocation(cityName: String): Future[String] =
     pipeline(Get(s"http://api.openweathermap.org/data/2.5/weather?q=$cityName")).map(_.entity.data.asString)
-  }
+
 }
