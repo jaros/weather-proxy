@@ -10,6 +10,7 @@ import spray.routing._
 
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
+import scala.util.{Success, Failure}
 
 
 // we don't implement our route structure directly in the service actor because
@@ -54,7 +55,6 @@ trait MyService extends HttpService {
 
     val response: Future[HttpResponse] = pipeline(Get(s"http://api.openweathermap.org/data/2.5/weather?q=$cityName"))
 
-    val result: HttpResponse = Await.result(response, 5 seconds)
-    result.entity.data.asString
+    response.map(_.entity.data.asString)
   }
 }
